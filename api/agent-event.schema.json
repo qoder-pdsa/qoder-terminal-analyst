@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qoder.local/qoder-terminal-analyst/agent-event.schema.json",
+  "title": "AgentEvent",
+  "description": "qoder-terminal-analyst 通过 SSE 推送给终端的事件",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["type", "text"],
+      "properties": {
+        "type": { "const": "thinking" },
+        "text": { "type": "string" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["type", "tool", "args"],
+      "properties": {
+        "type": { "const": "tool_call" },
+        "tool": { "type": "string" },
+        "args": { "type": "object" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["type", "tool", "ok"],
+      "properties": {
+        "type": { "const": "tool_result" },
+        "tool": { "type": "string" },
+        "ok": { "type": "boolean" },
+        "summary": { "type": "string" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["type", "command"],
+      "properties": {
+        "type": { "const": "open_panel" },
+        "command": { "type": "string", "description": "要在终端执行的功能码，如 '700.HK GP'" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["type", "markdown"],
+      "properties": {
+        "type": { "const": "answer" },
+        "markdown": { "type": "string" },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "url"],
+            "properties": {
+              "title": { "type": "string" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["type", "message"],
+      "properties": {
+        "type": { "const": "error" },
+        "message": { "type": "string" }
+      }
+    }
+  ]
+}
