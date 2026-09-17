@@ -1,4 +1,7 @@
-"""AgentEvent 模型，镜像 api/agent-event.schema.json（契约测试见 tests/test_contract.py）。"""
+"""AgentEvent models mirroring api/agent-event.schema.json.
+
+The contract test lives in tests/test_contract.py.
+"""
 
 from typing import Annotated, Any, Literal
 

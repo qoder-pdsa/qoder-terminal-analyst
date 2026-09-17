@@ -1,4 +1,4 @@
-"""FastAPI 应用：实现 api/openapi.yaml。"""
+"""FastAPI application implementing api/openapi.yaml."""
 
 import os
 from collections.abc import AsyncIterator
@@ -34,9 +34,10 @@ def _build_llm(name: str) -> LLMProvider:
 
 
 def build_data_client(base_url: str) -> httpx.AsyncClient:
-    """服务间调用的 HTTP 客户端。
+    """HTTP client for service-to-service calls.
 
-    `trust_env=False`：不读取系统 / 环境代理，避免 localhost 请求被本机代理转发（会返回 502）。
+    `trust_env=False`: ignore system/environment proxies so localhost requests are not
+    routed through a local proxy (which returns 502).
     """
     return httpx.AsyncClient(base_url=base_url, timeout=10.0, trust_env=False)
 
