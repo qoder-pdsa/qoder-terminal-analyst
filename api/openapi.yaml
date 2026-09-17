@@ -20,8 +20,8 @@ paths:
       operationId: ask
       summary: Ask
       description: |
-        自然语言分析请求。以 SSE 流式返回 `AgentEvent`
-        （见 api/agent-event.schema.json）。
+        Natural-language analysis request. Streams `AgentEvent` over SSE
+        (see api/agent-event.schema.json).
       requestBody:
         required: true
         content:
@@ -29,7 +29,7 @@ paths:
             schema: { $ref: "#/components/schemas/AskRequest" }
       responses:
         "200":
-          description: SSE 事件流
+          description: SSE event stream
           content:
             text/event-stream:
               schema: { type: string }
@@ -37,7 +37,7 @@ paths:
 components:
   responses:
     Error:
-      description: 错误
+      description: Error
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Error" }

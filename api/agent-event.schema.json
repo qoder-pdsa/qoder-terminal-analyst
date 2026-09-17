@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://qoder.local/qoder-terminal-analyst/agent-event.schema.json",
   "title": "AgentEvent",
-  "description": "qoder-terminal-analyst 通过 SSE 推送给终端的事件",
+  "description": "Events streamed by qoder-terminal-analyst to the terminal over SSE",
   "oneOf": [
     {
       "type": "object",
@@ -36,7 +36,7 @@
       "required": ["type", "command"],
       "properties": {
         "type": { "const": "open_panel" },
-        "command": { "type": "string", "description": "要在终端执行的功能码，如 '700.HK GP'" }
+        "command": { "type": "string", "description": "Function code to run in the terminal, e.g. '700.HK GP'" }
       }
     },
     {

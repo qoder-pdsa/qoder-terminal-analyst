@@ -1,4 +1,4 @@
-"""确保 pydantic 事件模型与 api/agent-event.schema.json 保持一致。"""
+"""Ensure the pydantic event models stay consistent with api/agent-event.schema.json."""
 
 import json
 from pathlib import Path

@@ -5,7 +5,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 COPY . .
 RUN uv sync --frozen --no-dev
-# 直接使用构建期安装好的虚拟环境：容器启动不联网、不重新安装依赖
+# Use the virtualenv built at image build time: startup needs no network and never reinstalls packages
 ENV PATH="/app/.venv/bin:$PATH"
 EXPOSE 8082
 CMD ["uvicorn", "qoder_analyst.app:app", "--host", "0.0.0.0", "--port", "8082"]

@@ -1,4 +1,4 @@
-"""ASK 分析师 agent 循环。"""
+"""ASK analyst agent loop."""
 
 from collections.abc import AsyncIterator
 from typing import Any
@@ -52,7 +52,7 @@ class Analyst:
 
         try:
             markdown = await self._llm.summarize(question, observations)
-        except Exception as exc:  # provider 实现各异，统一兜底为 error 事件
+        except Exception as exc:  # providers vary, so fall back to an error event
             yield Error(message=f"summarize failed: {type(exc).__name__}")
             return
         yield Answer(markdown=markdown, citations=_citations(observations))

@@ -11,7 +11,7 @@ async def _collect(analyst: Analyst, question: str) -> list[dict[str, object]]:
 
 async def test_ask_emits_tool_calls_panels_and_answer(data_client: httpx.AsyncClient) -> None:
     analyst = Analyst(StubProvider(), build_tools(data_client))
-    events = await _collect(analyst, "分析一下腾讯")
+    events = await _collect(analyst, "Analyze Tencent")
 
     types = [e["type"] for e in events]
     assert types[0] == "thinking"
@@ -25,7 +25,7 @@ async def test_ask_emits_tool_calls_panels_and_answer(data_client: httpx.AsyncCl
 
 async def test_tool_failure_does_not_break_stream(data_client: httpx.AsyncClient) -> None:
     analyst = Analyst(StubProvider(), build_tools(data_client))
-    events = await _collect(analyst, "看看 0000.HK")
+    events = await _collect(analyst, "How is 0000.HK doing?")
 
     failed = [e for e in events if e["type"] == "tool_result" and e["ok"] is False]
     assert failed, "404 from data service should surface as a failed tool_result"
@@ -34,7 +34,7 @@ async def test_tool_failure_does_not_break_stream(data_client: httpx.AsyncClient
 
 async def test_failed_tool_result_reports_http_status(data_client: httpx.AsyncClient) -> None:
     analyst = Analyst(StubProvider(), build_tools(data_client))
-    events = await _collect(analyst, "看看 0000.HK")
+    events = await _collect(analyst, "How is 0000.HK doing?")
 
     failed = next(e for e in events if e["type"] == "tool_result" and e["ok"] is False)
     assert failed["summary"] == "HTTP 404"
@@ -43,6 +43,11 @@ async def test_failed_tool_result_reports_http_status(data_client: httpx.AsyncCl
 def test_extract_symbols_supports_codes_and_chinese_names() -> None:
     from qoder_analyst.llm.stub import extract_symbols
 
-    assert extract_symbols("对比腾讯和 9988.hk，再看看美团") == ["700.HK", "9988.HK", "3690.HK"]
-    assert extract_symbols("0700.HK 怎么样") == ["700.HK"]
-    assert extract_symbols("今天大盘如何") == []
+    assert extract_symbols("Compare Tencent with 9988.hk, then check Meituan") == [
+        "700.HK",
+        "9988.HK",
+        "3690.HK",
+    ]
+    assert extract_symbols("How is 0700.HK?") == ["700.HK"]
+    assert extract_symbols("How is the market today?") == []
+    assert extract_symbols("BYDX is not BYD") == ["1211.HK"]

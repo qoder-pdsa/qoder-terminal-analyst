@@ -1,4 +1,7 @@
-"""Analyst 可调用的工具。当前直接调 qoder-terminal-data REST，后续迁移到 MCP（见 backlog）。"""
+"""Tools the analyst can call.
+
+Currently calls qoder-terminal-data REST directly; will move to MCP (see backlog).
+"""
 
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
@@ -18,7 +21,7 @@ class Tool:
 
 
 def build_tools(data: httpx.AsyncClient) -> dict[str, Tool]:
-    """构建工具注册表。`data` 的 base_url 应指向 qoder-terminal-data。"""
+    """Build the tool registry. The base_url of `data` must point to qoder-terminal-data."""
 
     async def get_quote(args: dict[str, Any]) -> Any:
         resp = await data.get(f"/v1/quotes/{args['symbol']}")
@@ -37,7 +40,7 @@ def build_tools(data: httpx.AsyncClient) -> dict[str, Tool]:
         "properties": {"symbol": {"type": "string", "pattern": r"^[0-9A-Z]{1,6}\.(HK|US|SH|SZ)$"}},
     }
     tools = [
-        Tool("get_quote", "获取某个标的的最新报价", symbol_schema, get_quote),
-        Tool("search_news", "搜索某个标的的最新新闻", symbol_schema, search_news),
+        Tool("get_quote", "Get the latest quote for a symbol", symbol_schema, get_quote),
+        Tool("search_news", "Search the latest news for a symbol", symbol_schema, search_news),
     ]
     return {t.name: t for t in tools}

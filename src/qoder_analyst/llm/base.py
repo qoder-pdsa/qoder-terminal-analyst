@@ -1,4 +1,4 @@
-"""LLMProvider 协议：负责把问题规划成工具调用，并基于结果写结论。"""
+"""LLMProvider protocol: plans a question into tool calls and summarizes the results."""
 
 from dataclasses import dataclass, field
 from typing import Any, Protocol
