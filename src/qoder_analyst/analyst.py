@@ -16,7 +16,7 @@ from qoder_analyst.events import (
     ToolResult,
 )
 from qoder_analyst.llm import LLMProvider
-from qoder_analyst.tools import Tool
+from qoder_analyst.tools import Tool, validate_tool_args
 
 
 class Analyst:
@@ -34,6 +34,11 @@ class Analyst:
             yield ToolCall(tool=call.tool, args=call.args)
             if tool is None:
                 yield ToolResult(tool=call.tool, ok=False, summary="unknown tool")
+                continue
+            violation = validate_tool_args(tool.parameters, call.args)
+            if violation is not None:
+                summary = f"invalid arguments: {violation}"
+                yield ToolResult(tool=call.tool, ok=False, summary=summary)
                 continue
             try:
                 result = await tool.run(call.args)
