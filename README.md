@@ -16,7 +16,8 @@ curl -N -X POST localhost:8082/v1/ask -H 'content-type: application/json' \
 | `ASK` analyst: plan → call data tools → open panels → cited conclusion (SSE stream) | ✅ stub planner |
 | Recognizes Hong Kong codes (`700.HK`) and company names (Tencent, Alibaba, …) | ✅ |
 | Real LLM (OpenAI-compatible API such as Alibaba Cloud Model Studio Qwen) | 🚧 backlog |
-| Tools over MCP, capital flow and indicator tools | 🚧 backlog |
+| Capital flow tool (`get_capital_flow`) and the `<symbol> CF` panel | ✅ stub planner |
+| Tools over MCP, indicator tools | 🚧 backlog |
 | Watch agent and opening briefing | 🚧 backlog |
 
 ## Environment variables

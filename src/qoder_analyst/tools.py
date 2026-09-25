@@ -34,13 +34,25 @@ def build_tools(data: httpx.AsyncClient) -> dict[str, Tool]:
         resp.raise_for_status()
         return resp.json()
 
+    async def get_capital_flow(args: dict[str, Any]) -> Any:
+        resp = await data.get(f"/v1/capital-flow/{args['symbol']}")
+        resp.raise_for_status()
+        return resp.json()
+
     symbol_schema = {
         "type": "object",
         "required": ["symbol"],
-        "properties": {"symbol": {"type": "string", "pattern": r"^[0-9A-Z]{1,6}\.(HK|US|SH|SZ)$"}},
+        "properties": {"symbol": {"type": "string", "pattern": r"^[0-9A-Z]{1,20}\.(HK|US|SH|SZ)$"}},
     }
     tools = [
         Tool("get_quote", "Get the latest quote for a symbol", symbol_schema, get_quote),
         Tool("search_news", "Search the latest news for a symbol", symbol_schema, search_news),
+        Tool(
+            "get_capital_flow",
+            "Get today's capital flow for a symbol: net inflow per minute and the "
+            "large/medium/small order distribution",
+            symbol_schema,
+            get_capital_flow,
+        ),
     ]
     return {t.name: t for t in tools}
